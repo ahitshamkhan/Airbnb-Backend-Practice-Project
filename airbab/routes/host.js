@@ -2,15 +2,20 @@ const express = require("express");
 const path = require("path");
 
 const hostrouter = express.Router();
-const rootdir=require('../utlits/pathutlits');
+const rootdir = require("../utlits/pathutlits");
 
 hostrouter.get("/add-home", (req, res, next) => {
-  res.sendFile(path.join(rootdir, "views", "addhome.html"));
+  res.render("addhome", { pageTitle: "Add Home" });
 });
+
+const registerhomes = [];
 
 hostrouter.post("/add-home", (req, res, next) => {
-  console.log(req.body);
-  res.sendFile(path.join(rootdir, "views", "homeadded.html"));
+  console.log(req.body, req.body.houseName);
+  registerhomes.push({ houseName: req.body.houseName });
+
+  res.render("homeadded", { pageTitle: "Home Added" });
 });
 
-module.exports = hostrouter;
+exports.hostrouter = hostrouter;
+exports.registerhomes = registerhomes;
