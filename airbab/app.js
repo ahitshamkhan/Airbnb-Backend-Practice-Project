@@ -3,6 +3,7 @@ const express = require("express");
 const userrouter = require("./routes/userRouter");
 const { hostrouter } = require("./routes/host");
 const rootdir = require("./utlits/pathutlits");
+const ErrorController = require("./controllers/error");
 
 const app = express();
 
@@ -17,9 +18,8 @@ app.use("/host", hostrouter);
 
 app.use(express.static(path.join(rootdir, "public")));
 
-app.use((req, res, next) => {
-  res.render("404", { pageTitle: "Page Not Found" });
-});
+app.use(ErrorController.pageNotFound);
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on address http://localhost:${PORT}`);
