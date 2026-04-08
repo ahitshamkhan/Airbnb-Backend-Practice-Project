@@ -7,9 +7,12 @@
         Here are our registered homes:
       </h2>
       <ul class="space-y-4">
-        <% registeredHomes.forEach(home => { %>
+        <% registeredHomes.forEach((home, index) => { %>
           <li class="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-            <span class="text-lg text-gray-800"><%= home.houseName %></span>
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-lg text-gray-800"><%= home.houseName %></span>
+              <a href="/host/edit-home/<%= index %>" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300">Edit</a>
+            </div>
           </li>
         <% }) %>
       </ul>
