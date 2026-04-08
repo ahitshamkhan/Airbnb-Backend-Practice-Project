@@ -20,7 +20,6 @@ hostrouter.post("/add-home", (req, res, next) => {
   if (!houseName) {
     return res.redirect("/host/add-home");
   }
-  console.log(req.body, houseName);
   registerhomes.push({ houseName });
 
   return res.render("homeadded", { pageTitle: "Home Added" });
@@ -42,12 +41,13 @@ hostrouter.get("/edit-home/:homeId", (req, res, next) => {
 hostrouter.post("/edit-home", (req, res, next) => {
   const homeIndex = Number(req.body.homeIndex);
   const houseName = typeof req.body.houseName === "string" ? req.body.houseName.trim() : "";
-  if (!Number.isNaN(homeIndex) && homeIndex >= 0 && homeIndex < registerhomes.length) {
-    if (!houseName) {
-      return res.redirect(`/host/edit-home/${homeIndex}`);
-    }
-    registerhomes[homeIndex].houseName = houseName;
+  if (Number.isNaN(homeIndex) || homeIndex < 0 || homeIndex >= registerhomes.length) {
+    return res.redirect("/");
   }
+  if (!houseName) {
+    return res.redirect(`/host/edit-home/${homeIndex}`);
+  }
+  registerhomes[homeIndex].houseName = houseName;
   return res.render("homeadded", { pageTitle: "Home Updated" });
 });
 
