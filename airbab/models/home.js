@@ -35,5 +35,26 @@ module.exports = class Home {
       callback(HomeFound);
     });
   }
-  
+
+  static deleteById(homeID, callback) {
+    this.fetchAll(homes => {
+      const updatedHomes = homes.filter(home => home.id !== homeID);
+      fs.writeFile(homeDataPath, JSON.stringify(updatedHomes), (error) => {
+        callback(error);
+      });
+    });
+  }
+
+  static update(homeID, updatedData, callback) {
+    this.fetchAll(homes => {
+      const homeIndex = homes.findIndex(home => home.id === homeID);
+      if (homeIndex !== -1) {
+        homes[homeIndex] = { ...homes[homeIndex], ...updatedData };
+      }
+      fs.writeFile(homeDataPath, JSON.stringify(homes), (error) => {
+        callback(error);
+      });
+    });
+  }
+
 };
