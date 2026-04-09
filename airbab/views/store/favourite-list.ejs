@@ -5,9 +5,12 @@
       <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
         Here are your favourites:
       </h2>
-      <div class="flex flex-wrap justify-center gap-6">
+      <% if (favouriteHomes.length === 0) { %>
+        <p class="text-center text-gray-500 text-xl">You have no favourites yet.</p>
+      <% } else { %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <% favouriteHomes.forEach(home => { %>
-          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 w-full max-w-sm">
+          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
             <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="w-full h-48 object-cover">
             <div class="p-4">
               <h3 class="text-xl font-semibold text-gray-800 mb-2"><%= home.houseName %></h3>
@@ -21,11 +24,21 @@
                   <span class="text-gray-700"><%= home.rating %></span>
                 </div>
               </div>
-              <button class="bg-green-300 p-2">Book</button>
+              <div class="flex gap-2 mt-3">
+                <form action="/bookings/add" method="POST" class="flex-1" onsubmit="return confirm('Confirm booking for <%= home.houseName %>?')">
+                  <input type="hidden" name="id" value="<%= home.id %>">
+                  <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Book</button>
+                </form>
+                <form action="/favourites/remove" method="POST" class="flex-1">
+                  <input type="hidden" name="id" value="<%= home.id %>">
+                  <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Remove</button>
+                </form>
+              </div>
             </div>
           </div>
         <% }) %>
       </div>
+      <% } %>
     </main>
   </body>
 </html>

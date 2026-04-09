@@ -1,7 +1,7 @@
 // Core Modules
 const fs = require("fs");
 const path = require("path");
-const rootDir = require("../utlits/pathutlits");
+const rootDir = require("../utils/pathUtils");
 const favouriteDataPath = path.join(rootDir, "data", "favourite.json");
 
 module.exports = class Favourite {
@@ -20,6 +20,13 @@ module.exports = class Favourite {
   static getFavourites(callback) {
     fs.readFile(favouriteDataPath, (err, data) => {
       callback(!err ? JSON.parse(data) : []);
+    });
+  }
+
+  static removeFavourite(homeId, callback) {
+    Favourite.getFavourites((favourites) => {
+      const updatedFavourites = favourites.filter(id => id !== homeId);
+      fs.writeFile(favouriteDataPath, JSON.stringify(updatedFavourites), callback);
     });
   }
 };

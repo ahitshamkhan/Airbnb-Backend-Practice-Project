@@ -1,7 +1,7 @@
 // Core Modules
 const fs = require("fs");
 const path = require("path");
-const rootDir = require("../utlits/pathutlits");
+const rootDir = require("../utils/pathUtils");
  const homeDataPath = path.join(rootDir, "data", "homes.json");
 
 module.exports = class Home {

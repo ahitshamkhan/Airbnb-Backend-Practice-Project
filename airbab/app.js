@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const userrouter = require("./routes/userRouter");
 const { hostrouter } = require("./routes/host");
-const rootdir = require("./utlits/pathutlits");
+const rootdir = require("./utils/pathUtils");
 const ErrorController = require("./controllers/error");
 
 const app = express();

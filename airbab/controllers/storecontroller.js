@@ -1,5 +1,6 @@
 const Favourite = require("../models/favourite");
 const Home = require("../models/home");
+const Booking = require("../models/booking");
 
 exports.getIndex = (req, res, next) => {
   Home.fetchAll((registeredHomes) =>
@@ -22,9 +23,15 @@ exports.getHomes = (req, res, next) => {
 };
 
 exports.getBookings = (req, res, next) => {
-  res.render("store/bookings", {
-    pageTitle: "My Bookings",
-    currentPage: "bookings",
+  Booking.getBookings(bookings => {
+    Home.fetchAll((registeredHomes) => {
+      const bookedHomes = registeredHomes.filter(home => bookings.includes(home.id));
+      res.render("store/bookings", {
+        bookedHomes: bookedHomes,
+        pageTitle: "My Bookings",
+        currentPage: "bookings",
+      });
+    });
   });
 };
 
@@ -48,6 +55,33 @@ exports.postAddtoFavourite = (req, res, next) => {
       console.log("Error while marking favourite");
     }
     res.redirect("/favourites");
+  });
+};
+
+exports.postRemoveFavourite = (req, res, next) => {
+  Favourite.removeFavourite(req.body.id, (error) => {
+    if (error) {
+      console.log("Error while removing favourite");
+    }
+    res.redirect("/favourites");
+  });
+};
+
+exports.postAddBooking = (req, res, next) => {
+  Booking.addBooking(req.body.id, (error) => {
+    if (error) {
+      console.log("Error while adding booking");
+    }
+    res.redirect("/bookings");
+  });
+};
+
+exports.postRemoveBooking = (req, res, next) => {
+  Booking.removeBooking(req.body.id, (error) => {
+    if (error) {
+      console.log("Error while removing booking");
+    }
+    res.redirect("/bookings");
   });
 };
 
