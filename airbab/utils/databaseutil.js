@@ -3,7 +3,7 @@ const pool=mysql.createPool({
  host: 'localhost',
  user: 'root',
  password: '8787',
- database: 'airbab'
+ database: 'airbnb'
 });
 
 module.exports=pool.promise();
