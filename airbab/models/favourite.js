@@ -1,56 +1,34 @@
 // Core Modules
-const fs = require("fs");
-const path = require("path");
-const rootDir = require("../utils/pathUtils");
-const favouriteDataPath = path.join(rootDir, "data", "favourite.json");
+const db = require("../utils/databaseutil");
 
 module.exports = class Favourite {
   static addToFavourite(homeId) {
     return new Promise((resolve, reject) => {
-      Favourite.getFavourites()
-        .then((favourites) => {
-          if (favourites.includes(homeId)) {
+      // Check if already favourited
+      db.execute("SELECT * FROM Favourites WHERE Home_ID = ?", [homeId])
+        .then(([rows]) => {
+          if (rows.length > 0) {
             reject("Home is already marked favourite");
           } else {
-            favourites.push(homeId);
-            fs.writeFile(
-              favouriteDataPath,
-              JSON.stringify(favourites),
-              (err) => {
-                if (err) reject(err);
-                else resolve();
-              },
-            );
+            // Add to favourites
+            return db.execute("INSERT INTO Favourites(Home_ID) VALUES (?)", [
+              homeId,
+            ]);
           }
         })
+        .then(() => resolve())
         .catch(reject);
     });
   }
 
   static getFavourites() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(favouriteDataPath, (err, data) => {
-        if (err) resolve([]);
-        else resolve(JSON.parse(data));
-      });
+    return db.execute("SELECT Home_ID FROM Favourites").then(([rows]) => {
+      // Convert [{Home_ID: 1}, {Home_ID: 2}] to [1, 2]
+      return rows.map((row) => row.Home_ID);
     });
   }
 
   static removeFavourite(homeId) {
-    return new Promise((resolve, reject) => {
-      Favourite.getFavourites()
-        .then((favourites) => {
-          const updatedFavourites = favourites.filter((id) => id !== homeId);
-          fs.writeFile(
-            favouriteDataPath,
-            JSON.stringify(updatedFavourites),
-            (err) => {
-              if (err) reject(err);
-              else resolve();
-            },
-          );
-        })
-        .catch(reject);
-    });
+    return db.execute("DELETE FROM Favourites WHERE Home_ID = ?", [homeId]);
   }
 };
