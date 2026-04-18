@@ -11,7 +11,7 @@ exports.getAddHome = (req, res, next) => {
 
 exports.getEditHome = (req, res, next) => {
   const homeID = req.params.homeID;
-  Home.findByid(homeID)
+  Home.findById(homeID)
     .then((home) => {
       if (!home) {
         return res.redirect("/host/host-home-list");
@@ -32,17 +32,11 @@ exports.getEditHome = (req, res, next) => {
 exports.postEditHome = (req, res, next) => {
   const { id, houseName, price, location, rating, photoUrl, description } =
     req.body;
-  const home = new Home(
-    houseName,
-    price,
-    location,
-    rating,
-    photoUrl,
-    description,
+  Home.findByIdAndUpdate(
     id,
-  );
-  home
-    .save()
+    { houseName, price, location, rating, photoUrl, description },
+    { new: true }
+  )
     .then(() => {
       res.redirect("/host/host-home-list");
     })
@@ -54,7 +48,7 @@ exports.postEditHome = (req, res, next) => {
 
 exports.postDeleteHome = (req, res, next) => {
   const homeID = req.body.homeID;
-  Home.deleteById(homeID)
+  Home.findByIdAndDelete(homeID)
     .then(() => {
       res.redirect("/host/host-home-list");
     })
@@ -65,7 +59,7 @@ exports.postDeleteHome = (req, res, next) => {
 };
 
 exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll().then((registeredHomes) =>
+  Home.find().then((registeredHomes) =>
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Host Homes List",
@@ -78,12 +72,12 @@ exports.postAddHome = (req, res, next) => {
   const { houseName, price, location, rating, photoUrl, description } =
     req.body;
   const home = new Home(
-    houseName,
+    {houseName,
     price,
     location,
     rating,
     photoUrl,
-    description,
+    description}
   );
   home
     .save()

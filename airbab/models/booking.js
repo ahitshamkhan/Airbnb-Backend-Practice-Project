@@ -1,41 +1,35 @@
-const { getDb } = require("../utils/databaseutil");
-const { ObjectId } = require("mongodb");
+const mongoose = require("mongoose");
 
-module.exports = class Booking {
+const bookingSchema = new mongoose.Schema({
+  homeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Home",
+    required: true,
+  },
+});
+
+const Booking = mongoose.model("Booking", bookingSchema);
+
+module.exports = class BookingModel {
   static addBooking(homeId) {
-    const db = getDb();
-
-    // First check if this home is already booked
-    return db
-      .collection("bookings")
-      .findOne({ homeId: new ObjectId(homeId) })
-      .then((existing) => {
-        if (existing) {
-          return Promise.reject("Home is already booked");
-        }
-        // Not booked yet → insert it
-        return db
-          .collection("bookings")
-          .insertOne({ homeId: new ObjectId(homeId) });
-      });
+    // Check if already booked
+    return Booking.findOne({ homeId: homeId }).then((existing) => {
+      if (existing) {
+        return Promise.reject("Home is already booked");
+      }
+      // Not booked yet → insert it
+      return new Booking({ homeId: homeId }).save();
+    });
   }
 
   static removeBooking(homeId) {
-    const db = getDb();
-    return db
-      .collection("bookings")
-      .deleteOne({ homeId: new ObjectId(homeId) });
+    return Booking.deleteOne({ homeId: homeId });
   }
 
   static getBookings() {
-    const db = getDb();
-    return db
-      .collection("bookings")
-      .find()
-      .toArray()
-      .then((bookings) => {
-        // Return array of homeId strings
-        return bookings.map((b) => b.homeId.toString());
-      });
+    return Booking.find().then((bookings) => {
+      // Return array of homeId strings
+      return bookings.map((b) => b.homeId.toString());
+    });
   }
 };
