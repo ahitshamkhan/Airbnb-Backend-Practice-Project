@@ -3,7 +3,7 @@ const Home = require("../models/home");
 const Booking = require("../models/booking");
 
 exports.getIndex = (req, res, next) => {
-  Home.fetchAll().then(([registeredHomes, fields]) => {
+  Home.fetchAll().then((registeredHomes) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "airbnb Home",
@@ -13,7 +13,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getHomes = (req, res, next) => {
-  Home.fetchAll().then(([registeredHomes, fields]) =>
+  Home.fetchAll().then((registeredHomes) =>
     res.render("store/home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Homes List",
@@ -23,10 +23,10 @@ exports.getHomes = (req, res, next) => {
 };
 
 exports.getBookings = (req, res, next) => {
-  Booking.getBookings().then((bookings) => {
-    Home.fetchAll().then(([registeredHomes, fields]) => {
+  Booking.getBookings().then((bookingIds) => {
+    Home.fetchAll().then((registeredHomes) => {
       const bookedHomes = registeredHomes.filter((home) =>
-        bookings.map(String).includes(String(home.id)),
+        bookingIds.includes(home._id.toString()),
       );
       res.render("store/bookings", {
         bookedHomes: bookedHomes,
@@ -38,10 +38,10 @@ exports.getBookings = (req, res, next) => {
 };
 
 exports.getFavouriteList = (req, res, next) => {
-  Favourite.getFavourites().then((favourites) => {
-    Home.fetchAll().then(([registeredHomes, fields]) => {
+  Favourite.getFavourites().then((favouriteIds) => {
+    Home.fetchAll().then((registeredHomes) => {
       const favouriteHomes = registeredHomes.filter((home) =>
-        favourites.map(String).includes(String(home.id)),
+        favouriteIds.includes(home._id.toString()),
       );
       res.render("store/favourite-list", {
         favouriteHomes: favouriteHomes,
@@ -99,8 +99,7 @@ exports.postRemoveBooking = (req, res, next) => {
 
 exports.getHomeDetalis = (req, res, next) => {
   const homeID = req.params.homeID;
-  Home.findByid(homeID).then(([homes]) => {
-    const home = homes[0];
+  Home.findByid(homeID).then((home) => {
     if (!home) {
       console.log("Home Not Found");
       res.redirect("/homes");

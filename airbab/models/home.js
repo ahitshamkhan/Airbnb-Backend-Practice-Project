@@ -1,5 +1,5 @@
-// Core Modules
-const db = require("../utils/databaseutil");
+const { getDb } = require("../utils/databaseutil");
+const { ObjectId } = require("mongodb");
 
 module.exports = class Home {
   constructor(houseName, price, location, rating, photoUrl, description, id) {
@@ -13,82 +13,39 @@ module.exports = class Home {
   }
 
   save() {
+    const db = getDb();
     if (this.id) {
-      return db.execute(
-        `UPDATE Homes SET House_Name=?, Price=?, Location=?, Rating=?, PhotoURL=?, Home_description=? WHERE Home_ID=?`,
-        [
-          this.houseName,
-          this.price,
-          this.location,
-          this.rating,
-          this.photoUrl,
-          this.description,
-          this.id,
-        ],
-      );
+      // ID exists → UPDATE existing home
+      const homeId = this.id;
+      delete this.id; // remove id field before updating
+      return db
+        .collection("homes")
+        .updateOne({ _id: new ObjectId(homeId) }, { $set: this });
+    } else {
+      // No ID → INSERT new home
+      return db.collection("homes").insertOne(this);
     }
-    return db.execute(
-      `INSERT INTO Homes(House_Name,Price,Location,Rating,PhotoURL,Home_description) VALUES (?, ?, ?, ?, ?, ?)`,
-      [
-        this.houseName,
-        this.price,
-        this.location,
-        this.rating,
-        this.photoUrl,
-        this.description,
-      ],
-    );
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM Homes").then(([homes, fields]) => {
-      const transformedHomes = homes.map((home) => ({
-        id: home.Home_ID,
-        houseName: home.House_Name,
-        price: home.Price,
-        location: home.Location,
-        rating: home.Rating,
-        photoUrl: home.PhotoURL,
-        description: home.Home_description,
-      }));
-      return [transformedHomes, fields];
-    });
+    const db = getDb();
+    return db.collection("homes").find().toArray();
   }
 
   static findByid(homeID) {
-    return db
-      .execute("SELECT * FROM Homes WHERE Home_ID=?", [homeID])
-      .then(([homes, fields]) => {
-        if (homes.length === 0) return [[], fields];
-        const home = homes[0];
-        const transformedHome = {
-          id: home.Home_ID,
-          houseName: home.House_Name,
-          price: home.Price,
-          location: home.Location,
-          rating: home.Rating,
-          photoUrl: home.PhotoURL,
-          description: home.Home_description,
-        };
-        return [[transformedHome], fields];
-      });
+    const db = getDb();
+    return db.collection("homes").findOne({ _id: new ObjectId(homeID) });
   }
+
   static deleteById(homeID) {
-    return db.execute("DELETE FROM Homes WHERE Home_ID=?", [homeID]);
+    const db = getDb();
+    return db.collection("homes").deleteOne({ _id: new ObjectId(homeID) });
   }
 
   static update(homeID, updatedData) {
-    return db.execute(
-      `UPDATE Homes SET House_Name=?, Price=?, Location=?, Rating=?, PhotoURL=?, Home_description=? WHERE Home_ID=?`,
-      [
-        updatedData.houseName,
-        updatedData.price,
-        updatedData.location,
-        updatedData.rating,
-        updatedData.photoUrl,
-        updatedData.description,
-        homeID,
-      ],
-    );
+    const db = getDb();
+    return db
+      .collection("homes")
+      .updateOne({ _id: new ObjectId(homeID) }, { $set: updatedData });
   }
 };

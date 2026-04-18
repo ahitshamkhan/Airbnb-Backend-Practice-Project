@@ -26,11 +26,11 @@
               </div>
               <div class="flex gap-2 mt-3">
                 <form action="/bookings/add" method="POST" class="flex-1" onsubmit="return confirm('Confirm booking for <%= home.houseName %>?')">
-                  <input type="hidden" name="id" value="<%= home.id %>">
+                  <input type="hidden" name="id" value="<%= home._id %>">
                   <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Book</button>
                 </form>
                 <form action="/favourites/remove" method="POST" class="flex-1">
-                  <input type="hidden" name="id" value="<%= home.id %>">
+                  <input type="hidden" name="id" value="<%= home._id %>">
                   <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Remove</button>
                 </form>
               </div>

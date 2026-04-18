@@ -12,8 +12,7 @@ exports.getAddHome = (req, res, next) => {
 exports.getEditHome = (req, res, next) => {
   const homeID = req.params.homeID;
   Home.findByid(homeID)
-    .then(([homes]) => {
-      const home = homes[0];
+    .then((home) => {
       if (!home) {
         return res.redirect("/host/host-home-list");
       }
@@ -66,7 +65,7 @@ exports.postDeleteHome = (req, res, next) => {
 };
 
 exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll().then(([registeredHomes, fields]) =>
+  Home.fetchAll().then((registeredHomes) =>
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Host Homes List",
@@ -89,10 +88,8 @@ exports.postAddHome = (req, res, next) => {
   home
     .save()
     .then(() => {
-      res.render("host/homeadded", {
-        pageTitle: "Home Added Successfully",
-        currentPage: "homeAdded",
-      });
+      console.log("Home Saved Successfully");
+      res.redirect("/host/host-home-list"); // ← redirect after save
     })
     .catch((error) => {
       console.log("Error adding home:", error);

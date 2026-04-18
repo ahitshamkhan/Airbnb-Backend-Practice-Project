@@ -1,34 +1,41 @@
-// Core Modules
-const db = require("../utils/databaseutil");
+const { getDb } = require("../utils/databaseutil");
+const { ObjectId } = require("mongodb");
 
 module.exports = class Favourite {
   static addToFavourite(homeId) {
-    return new Promise((resolve, reject) => {
-      // Check if already favourited
-      db.execute("SELECT * FROM Favourites WHERE Home_ID = ?", [homeId])
-        .then(([rows]) => {
-          if (rows.length > 0) {
-            reject("Home is already marked favourite");
-          } else {
-            // Add to favourites
-            return db.execute("INSERT INTO Favourites(Home_ID) VALUES (?)", [
-              homeId,
-            ]);
-          }
-        })
-        .then(() => resolve())
-        .catch(reject);
-    });
-  }
+    const db = getDb();
 
-  static getFavourites() {
-    return db.execute("SELECT Home_ID FROM Favourites").then(([rows]) => {
-      // Convert [{Home_ID: 1}, {Home_ID: 2}] to [1, 2]
-      return rows.map((row) => row.Home_ID);
-    });
+    // First check if already in favourites
+    return db
+      .collection("favourites")
+      .findOne({ homeId: new ObjectId(homeId) })
+      .then((existing) => {
+        if (existing) {
+          return Promise.reject("Home is already marked as favourite");
+        }
+        // Not favourited yet → insert it
+        return db
+          .collection("favourites")
+          .insertOne({ homeId: new ObjectId(homeId) });
+      });
   }
 
   static removeFavourite(homeId) {
-    return db.execute("DELETE FROM Favourites WHERE Home_ID = ?", [homeId]);
+    const db = getDb();
+    return db
+      .collection("favourites")
+      .deleteOne({ homeId: new ObjectId(homeId) });
+  }
+
+  static getFavourites() {
+    const db = getDb();
+    return db
+      .collection("favourites")
+      .find()
+      .toArray()
+      .then((favourites) => {
+        // Return array of homeId strings
+        return favourites.map((f) => f.homeId.toString());
+      });
   }
 };

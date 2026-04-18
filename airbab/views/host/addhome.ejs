@@ -8,7 +8,7 @@
       </h1>
       <form action="<%= editing ? '/host/edit-home' : '/host/add-home' %>" method="POST" class="max-w-md mx-auto">
         <% if (editing) { %>
-          <input type="hidden" name="id" value="<%= home.id %>" />
+          <input type="hidden" name="id" value="<%= home._id %>" />
         <% } %>
         <input
           type="text"

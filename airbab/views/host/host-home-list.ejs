@@ -22,9 +22,9 @@
                 </div>
               </div>
               <div class="flex gap-2 mt-3">
-                <a href="/host/edit-home/<%= home.id %>" class="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Edit</a>
+                <a href="/host/edit-home/<%= home._id %>" class="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Edit</a>
                 <form action="/host/delete-home" method="POST" class="flex-1">
-                  <input type="hidden" name="homeID" value="<%= home.id %>" />
+                  <input type="hidden" name="homeID" value="<%= home._id %>" />
                   <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Delete</button>
                 </form>
               </div>
