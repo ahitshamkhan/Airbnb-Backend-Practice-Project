@@ -1,7 +1,8 @@
 const path = require("path");
 const express = require("express");
-const userrouter = require("./routes/userRouter");
+const userrouter = require("./routes/storeRouter");
 const { hostrouter } = require("./routes/host");
+const authrouter = require("./routes/authRouter");
 const rootdir = require("./utils/pathUtils");
 const ErrorController = require("./controllers/error");
 const mongoose = require("mongoose");
@@ -14,6 +15,7 @@ app.set("views", "views");
 app.use(express.urlencoded());
 
 app.use(userrouter);
+app.use(authrouter);
 
 app.use("/host", hostrouter);
 
