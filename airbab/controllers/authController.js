@@ -1,3 +1,14 @@
+exports.getSignup = (req, res, next) => {
+  res.render("auth/signup", {
+    pageTitle: "Sign Up for Airbnb",
+    currentPage: "signup",
+  });
+};
+
+exports.postSignup = (req, res, next) => {
+  console.log(req.body);
+  res.redirect("/Login");
+};
 
 exports.getLogin = (req, res, next) => {
   res.render("auth/Login", {

@@ -1,0 +1,93 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper" style="min-height: calc(100vh - 68px); display:flex; align-items:center; justify-content:center; padding: 40px 24px;">
+      <div class="form-container anim-fadeUp">
+
+        <div class="form-header">
+          <div class="form-header__icon">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <h1 class="form-header__title">Create an Account</h1>
+          <p class="form-header__subtitle">Join Airbab — discover, save, and book beautiful homes.</p>
+        </div>
+
+        <form action="/signup" method="POST">
+
+          <div class="form-group--row">
+            <div class="form-group">
+              <label class="form-label" for="firstName">First Name</label>
+              <input id="firstName" type="text" name="firstName" placeholder="John"
+                class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="lastName">Last Name</label>
+              <input id="lastName" type="text" name="lastName" placeholder="Doe"
+                class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input id="email" type="email" name="email" placeholder="you@example.com"
+              class="form-control" required />
+          </div>
+
+          <div class="form-group--row">
+            <div class="form-group">
+              <label class="form-label" for="password">Password</label>
+              <input id="password" type="password" name="password" placeholder="••••••••"
+                class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" type="password" name="confirmPassword" placeholder="••••••••"
+                class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">I am a…</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="guest" name="userType" value="guest" checked />
+                <label for="guest" class="radio-option__label">
+                  <i class="fa-solid fa-suitcase-rolling"></i> Guest
+                </label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="host" name="userType" value="host" />
+                <label for="host" class="radio-option__label">
+                  <i class="fa-solid fa-house-chimney-user"></i> Host
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-row">
+              <input type="checkbox" id="terms" name="terms" required />
+              <label for="terms">
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-top: 8px;">
+            <input type="submit" value="Create Account"
+              class="btn btn-primary btn-full btn-lg" style="cursor:pointer;" />
+          </div>
+        </form>
+
+        <div class="form-divider">or</div>
+
+        <div class="form-footer">
+          Already have an account? <a href="/Login">Sign in</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

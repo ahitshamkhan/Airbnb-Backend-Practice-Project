@@ -1,44 +1,60 @@
 <%- include('../partials/head') %>
   <body>
     <%- include('../partials/nav') %>
-    <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-6xl">
-      <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
-        Here are your favourites:
-      </h2>
+
+    <main class="page-wrapper">
+      <div class="page-header anim-fadeUp">
+        <p class="page-header__eyebrow"><i class="fa-regular fa-heart"></i> Saved</p>
+        <h1 class="page-header__title">Your Favourites</h1>
+        <p class="page-header__subtitle">Homes you've saved for your next adventure.</p>
+      </div>
+
       <% if (favouriteHomes.length === 0) { %>
-        <p class="text-center text-gray-500 text-xl">You have no favourites yet.</p>
+        <div class="empty-state">
+          <div class="empty-state__icon">💔</div>
+          <h3 class="empty-state__title">No favourites yet</h3>
+          <p class="empty-state__subtitle">Start exploring and save the homes you love.</p>
+          <a href="/homes" class="btn btn-primary">Explore Homes</a>
+        </div>
       <% } else { %>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <% favouriteHomes.forEach(home => { %>
-          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
-            <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="w-full h-48 object-cover">
-            <div class="p-4">
-              <h3 class="text-xl font-semibold text-gray-800 mb-2"><%= home.houseName %></h3>
-              <p class="text-gray-600 mb-2"><i class="fas fa-map-marker-alt mr-2"></i><%= home.location %></p>
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-lg font-bold text-red-500">Rs <%= home.price %> / night</span>
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-yellow-400 mr-1">
-                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                  </svg>
-                  <span class="text-gray-700"><%= home.rating %></span>
+        <div class="homes-grid">
+          <% favouriteHomes.forEach((home, i) => { %>
+            <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
+              <div class="card__image-wrap">
+                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                <span class="card__badge card__badge--booked">❤️ Saved</span>
+              </div>
+              <div class="card__body">
+                <h3 class="card__title"><%= home.houseName %></h3>
+                <p class="card__location">
+                  <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i>
+                  <%= home.location %>
+                </p>
+                <div class="card__meta">
+                  <div class="card__price">Rs <%= home.price %> <span>/ night</span></div>
+                  <div class="card__rating"><span class="star">★</span> <%= home.rating %></div>
+                </div>
+                <div class="card__actions">
+                  <form action="/bookings/add" method="POST" class="flex-1" onsubmit="return confirm('Confirm booking for <%= home.houseName %>?')">
+                    <input type="hidden" name="id" value="<%= home._id %>" />
+                    <button type="submit" class="btn btn-primary btn-full">
+                      <i class="fa-regular fa-calendar-check"></i> Book Now
+                    </button>
+                  </form>
+                  <form action="/favourites/remove" method="POST">
+                    <input type="hidden" name="id" value="<%= home._id %>" />
+                    <button type="submit" class="btn btn-danger" title="Remove from favourites">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
                 </div>
               </div>
-              <div class="flex gap-2 mt-3">
-                <form action="/bookings/add" method="POST" class="flex-1" onsubmit="return confirm('Confirm booking for <%= home.houseName %>?')">
-                  <input type="hidden" name="id" value="<%= home._id %>">
-                  <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Book</button>
-                </form>
-                <form action="/favourites/remove" method="POST" class="flex-1">
-                  <input type="hidden" name="id" value="<%= home._id %>">
-                  <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-300">Remove</button>
-                </form>
-              </div>
             </div>
-          </div>
-        <% }) %>
-      </div>
+          <% }) %>
+        </div>
       <% } %>
     </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
   </body>
 </html>
