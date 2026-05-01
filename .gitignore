@@ -1,20 +1,29 @@
-# Dependencies
+# ── Dependencies ─────────────────
 node_modules/
 
-# Environment variables
+# ── Environment Variables ─────────
+# NEVER commit real secrets
 .env
 
-# OS files
+# ── Logs ─────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ── OS Files ─────────────────────
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
+# ── Editor ───────────────────────
+.vscode/settings.json
 .idea/
 
-# Tailwind output (auto-generated)
+# ── Build Output ─────────────────
+dist/
+build/
 public/output.css
 
-# Logs
-*.log
-npm-debug.log*
+# ── Misc ─────────────────────────
+*.pem
+*.key
+*.cert
