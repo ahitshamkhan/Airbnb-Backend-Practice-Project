@@ -13,10 +13,26 @@
           <p class="form-header__subtitle">Sign in to continue your journey with Airbab.</p>
         </div>
 
+        <!-- Validation Errors -->
+        <% if (errors && errors.length > 0) { %>
+          <div style="background: rgba(255,56,92,0.08); border: 1px solid rgba(255,56,92,0.3); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 20px;">
+            <p style="font-size: 0.82rem; font-weight: 700; color: var(--brand); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+              <i class="fa-solid fa-circle-exclamation"></i> Login Failed
+            </p>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 4px;">
+              <% errors.forEach(err => { %>
+                <li style="font-size: 0.85rem; color: var(--brand-light);">• <%= err %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+
         <form action="/Login" method="POST">
           <div class="form-group">
-            <label class="form-label" for="username">Email / Username</label>
-            <input id="username" type="text" name="username" placeholder="you@example.com"
+            <label class="form-label" for="username">Email Address</label>
+            <input id="username" type="text" name="username"
+              placeholder="you@example.com"
+              value="<%= oldInput.username || '' %>"
               class="form-control" required />
           </div>
 
