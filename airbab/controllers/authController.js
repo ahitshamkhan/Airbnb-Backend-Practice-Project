@@ -98,7 +98,7 @@ exports.postSignup = [
     }
 
     bcrypt.hash(password, 12).then((hashedPassword) => {
-      const user = new User({ firstName, lastName, email, password, userType });
+      const user = new User({ firstName, lastName, email, password: hashedPassword, userType });
       user
         .save()
         .then(() => {
@@ -109,7 +109,7 @@ exports.postSignup = [
             pageTitle: "Sign Up for Airbnb",
             currentPage: "signup",
             errors: [err.message],
-            oldInput: { firstName, lastName, email, password, userType },
+            oldInput: { firstName, lastName, email, userType },
           });
         });
     });
