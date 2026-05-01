@@ -1,0 +1,55 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper">
+      <div class="page-header anim-fadeUp">
+        <p class="page-header__eyebrow"><i class="fa-regular fa-calendar-check"></i> My Bookings</p>
+        <h1 class="page-header__title">Your Reservations</h1>
+        <p class="page-header__subtitle">Manage all of your upcoming and current stays.</p>
+      </div>
+
+      <% if (bookedHomes.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-state__icon">🗓️</div>
+          <h3 class="empty-state__title">No bookings yet</h3>
+          <p class="empty-state__subtitle">Your confirmed stays will appear here. Start by exploring homes.</p>
+          <a href="/homes" class="btn btn-primary">Find a Home</a>
+        </div>
+      <% } else { %>
+        <div class="homes-grid">
+          <% bookedHomes.forEach((home, i) => { %>
+            <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
+              <div class="card__image-wrap">
+                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                <span class="card__badge card__badge--booked">✓ Booked</span>
+              </div>
+              <div class="card__body">
+                <h3 class="card__title"><%= home.houseName %></h3>
+                <p class="card__location">
+                  <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i>
+                  <%= home.location %>
+                </p>
+                <div class="card__meta">
+                  <div class="card__price">Rs <%= home.price %> <span>/ night</span></div>
+                  <div class="card__rating"><span class="star">★</span> <%= home.rating %></div>
+                </div>
+                <span class="badge badge--green" style="margin-bottom: 14px; display:inline-flex;">
+                  <i class="fa-solid fa-circle-check"></i> Confirmed
+                </span>
+                <form action="/bookings/remove" method="POST">
+                  <input type="hidden" name="id" value="<%= home._id %>" />
+                  <button type="submit" class="btn btn-danger btn-full">
+                    <i class="fa-solid fa-xmark"></i> Cancel Booking
+                  </button>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

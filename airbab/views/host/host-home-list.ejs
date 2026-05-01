@@ -1,0 +1,63 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper">
+      <div class="page-header anim-fadeUp">
+        <p class="page-header__eyebrow"><i class="fa-solid fa-building"></i> Host Dashboard</p>
+        <h1 class="page-header__title">Your Listed Homes</h1>
+        <p class="page-header__subtitle">Manage, edit, and grow your property portfolio.</p>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; margin-bottom: 28px;" class="anim-fadeUp anim-fadeUp--d1">
+        <a href="/host/add-home" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Add New Home
+        </a>
+      </div>
+
+      <% if (registeredHomes.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-state__icon">🏡</div>
+          <h3 class="empty-state__title">You haven't listed any homes</h3>
+          <p class="empty-state__subtitle">Start earning by listing your first property on Airbab.</p>
+          <a href="/host/add-home" class="btn btn-primary">List a Home</a>
+        </div>
+      <% } else { %>
+        <div class="homes-grid">
+          <% registeredHomes.forEach((home, i) => { %>
+            <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
+              <div class="card__image-wrap">
+                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+              </div>
+              <div class="card__body">
+                <h3 class="card__title"><%= home.houseName %></h3>
+                <p class="card__location">
+                  <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i>
+                  <%= home.location %>
+                </p>
+                <div class="card__meta">
+                  <div class="card__price">Rs <%= home.price %> <span>/ night</span></div>
+                  <div class="card__rating"><span class="star">★</span> <%= home.rating %></div>
+                </div>
+                <div class="card__actions">
+                  <a href="/host/edit-home/<%= home._id %>" class="btn btn-blue btn-full">
+                    <i class="fa-solid fa-pen"></i> Edit
+                  </a>
+                  <form action="/host/delete-home" method="POST">
+                    <input type="hidden" name="homeID" value="<%= home._id %>" />
+                    <button type="submit" class="btn btn-danger" title="Delete home"
+                      onclick="return confirm('Are you sure you want to delete <%= home.houseName %>?')">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

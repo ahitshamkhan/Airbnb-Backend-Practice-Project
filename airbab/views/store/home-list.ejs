@@ -1,0 +1,53 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper">
+      <div class="page-header anim-fadeUp">
+        <p class="page-header__eyebrow"><i class="fa-solid fa-magnifying-glass"></i> Browse</p>
+        <h1 class="page-header__title">All Available Homes</h1>
+        <p class="page-header__subtitle">Browse our full collection of handpicked properties.</p>
+      </div>
+
+      <% if (registeredHomes.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-state__icon">🏘️</div>
+          <h3 class="empty-state__title">No homes listed yet</h3>
+          <p class="empty-state__subtitle">Check back soon or list your own property.</p>
+          <a href="/host/add-home" class="btn btn-primary">List a Home</a>
+        </div>
+      <% } else { %>
+        <div class="homes-grid">
+          <% registeredHomes.forEach((home, i) => { %>
+            <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
+              <div class="card__image-wrap">
+                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+              </div>
+              <div class="card__body">
+                <h3 class="card__title"><%= home.houseName %></h3>
+                <p class="card__location">
+                  <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i>
+                  <%= home.location %>
+                </p>
+                <div class="card__meta">
+                  <div class="card__price">Rs <%= home.price %> <span>/ night</span></div>
+                  <div class="card__rating">
+                    <span class="star">★</span> <%= home.rating %>
+                  </div>
+                </div>
+                <div class="card__actions">
+                  <a href="/homes/<%= home._id %>" class="btn btn-blue btn-full">
+                    <i class="fa-solid fa-eye"></i> View
+                  </a>
+                  <%- include('../partials/favorite', {home: home}) %>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

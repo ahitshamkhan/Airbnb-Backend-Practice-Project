@@ -1,0 +1,91 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper" style="padding-top: 40px; padding-bottom: 80px;">
+
+      <!-- Back link -->
+      <a href="/homes" class="btn btn-ghost btn-sm anim-fadeUp" style="margin-bottom:24px; display:inline-flex;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Homes
+      </a>
+
+      <!-- Hero Image -->
+      <div class="detail-hero anim-fadeUp">
+        <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" />
+      </div>
+
+      <!-- Detail Grid -->
+      <div class="detail-grid">
+
+        <!-- Left: Info -->
+        <div>
+          <div class="anim-fadeUp anim-fadeUp--d1" style="margin-bottom: 8px;">
+            <span class="badge badge--gold"><i class="fa-solid fa-star"></i> <%= home.rating %> / 5</span>
+          </div>
+          <h1 class="page-header__title anim-fadeUp anim-fadeUp--d1" style="text-align:left; font-size:2rem; padding:0; margin-bottom:8px;">
+            <%= home.houseName %>
+          </h1>
+          <p style="color:var(--text-secondary); display:flex; align-items:center; gap:6px; margin-bottom:28px;" class="anim-fadeUp anim-fadeUp--d2">
+            <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i> <%= home.location %>
+          </p>
+
+          <div class="detail-info anim-fadeUp anim-fadeUp--d2">
+            <div class="detail-info__section">
+              <div class="detail-info__label">About this place</div>
+              <div class="detail-info__value"><%= home.description %></div>
+            </div>
+            <div class="detail-info__section">
+              <div class="detail-info__label">Location</div>
+              <div class="detail-info__value">
+                <i class="fa-solid fa-map-pin" style="color:var(--brand); margin-right:6px;"></i><%= home.location %>
+              </div>
+            </div>
+            <div class="detail-info__section">
+              <div class="detail-info__label">Guest Rating</div>
+              <div class="detail-info__value" style="display:flex; align-items:center; gap:6px;">
+                <span style="color:var(--gold); font-size:1.2rem;">★★★★★</span>
+                <strong><%= home.rating %></strong> / 5 · Exceptional
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Booking Sidebar -->
+        <div class="detail-sidebar anim-fadeUp anim-fadeUp--d3">
+          <div class="detail-sidebar__price">Rs <%= home.price %> <span>/ night</span></div>
+          <div class="detail-sidebar__rating">
+            <span class="star">★</span> <%= home.rating %> · Superhost
+          </div>
+
+          <div style="border-top: 1px solid var(--border); padding-top: 20px; margin-bottom: 16px;">
+            <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Includes</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+              <li style="font-size:0.88rem; display:flex; gap:8px; align-items:center; color:var(--text-secondary);">
+                <i class="fa-solid fa-wifi" style="color:var(--green); width:16px;"></i> Free Wifi
+              </li>
+              <li style="font-size:0.88rem; display:flex; gap:8px; align-items:center; color:var(--text-secondary);">
+                <i class="fa-solid fa-car" style="color:var(--blue); width:16px;"></i> Free Parking
+              </li>
+              <li style="font-size:0.88rem; display:flex; gap:8px; align-items:center; color:var(--text-secondary);">
+                <i class="fa-solid fa-snowflake" style="color:var(--brand-light); width:16px;"></i> Air Conditioning
+              </li>
+            </ul>
+          </div>
+
+          <form action="/favourites" method="POST" style="margin-bottom: 10px;">
+            <input type="hidden" name="id" value="<%= home._id %>" />
+            <button type="submit" class="btn btn-success btn-full">
+              <i class="fa-regular fa-heart"></i> Save to Favourites
+            </button>
+          </form>
+
+          <a href="/homes" class="btn btn-ghost btn-full" style="justify-content:center;">
+            <i class="fa-solid fa-arrow-left"></i> Back to listings
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

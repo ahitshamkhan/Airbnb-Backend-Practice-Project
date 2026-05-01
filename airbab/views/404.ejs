@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+  <body>
+    <%- include('partials/nav') %>
+
+    <div class="error-page">
+      <div class="anim-fadeUp">
+        <div class="error-page__code">404</div>
+        <h1 class="error-page__title">Page Not Found</h1>
+        <p class="error-page__subtitle">Looks like this page checked out before you arrived.</p>
+        <a href="/" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-house"></i> Go Back Home
+        </a>
+      </div>
+    </div>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

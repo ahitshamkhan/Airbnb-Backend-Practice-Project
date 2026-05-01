@@ -1,0 +1,29 @@
+# ── Dependencies ─────────────────
+node_modules/
+
+# ── Environment Variables ─────────
+# NEVER commit real secrets
+.env
+
+# ── Logs ─────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ── OS Files ─────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editor ───────────────────────
+.vscode/settings.json
+.idea/
+
+# ── Build Output ─────────────────
+dist/
+build/
+public/output.css
+
+# ── Misc ─────────────────────────
+*.pem
+*.key
+*.cert

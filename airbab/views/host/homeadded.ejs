@@ -1,0 +1,25 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper" style="min-height: calc(100vh - 68px); display:flex; align-items:center; justify-content:center; text-align:center;">
+      <div class="anim-fadeUp">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+        <h1 class="page-header__title" style="font-size: 2rem; margin-bottom: 10px;">Listing Published!</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 32px; font-size: 1rem; max-width:400px;">
+          Your home is now live on Airbab. Guests can discover and book it right away.
+        </p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="/host/host-home-list" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-building"></i> View My Listings
+          </a>
+          <a href="/host/add-home" class="btn btn-ghost btn-lg">
+            <i class="fa-solid fa-plus"></i> Add Another
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

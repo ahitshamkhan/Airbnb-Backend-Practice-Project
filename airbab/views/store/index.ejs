@@ -1,0 +1,106 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper">
+      <!-- Hero -->
+      <section class="hero anim-fadeUp">
+        <div class="hero__eyebrow">
+          <i class="fa-solid fa-star"></i>
+          #1 Home Rental Platform
+        </div>
+        <h1 class="hero__title">
+          Find Your Perfect<br>
+          <span class="gradient-text">Home Away From Home</span>
+        </h1>
+        <p class="hero__subtitle">
+          Discover handpicked properties in stunning locations. From cozy city apartments to breathtaking mountain retreats.
+        </p>
+        <div class="hero__cta">
+          <% if(isLoggedIn) { %>
+            <a href="/homes" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-magnifying-glass"></i> Explore Homes
+            </a>
+            <a href="/host/add-home" class="btn btn-ghost btn-lg">
+              Become a Host <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          <% } else { %>
+            <a href="/signup" class="btn btn-primary btn-lg">
+              Get Started Free <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="/Login" class="btn btn-ghost btn-lg">Sign In</a>
+          <% } %>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <div class="hero__stat-number">10K+</div>
+            <div class="hero__stat-label">Homes Listed</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">50K+</div>
+            <div class="hero__stat-label">Happy Guests</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">120+</div>
+            <div class="hero__stat-label">Cities</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">4.9★</div>
+            <div class="hero__stat-label">Avg. Rating</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Homes -->
+      <section class="section-gap">
+        <div class="page-header" style="padding-top:0; text-align:left;">
+          <p class="page-header__eyebrow"><i class="fa-solid fa-fire"></i> Featured</p>
+          <h2 class="page-header__title" style="text-align:left; font-size:1.8rem;">Trending Right Now</h2>
+        </div>
+
+        <% if (registeredHomes.length === 0) { %>
+          <div class="empty-state">
+            <div class="empty-state__icon">🏠</div>
+            <h3 class="empty-state__title">No homes yet</h3>
+            <p class="empty-state__subtitle">Be the first to list your property on Airbab!</p>
+            <a href="/host/add-home" class="btn btn-primary">List Your Home</a>
+          </div>
+        <% } else { %>
+          <div class="homes-grid">
+            <% registeredHomes.forEach((home, i) => { %>
+              <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
+                <div class="card__image-wrap">
+                  <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                  <% if(i === 0) { %><span class="card__badge card__badge--featured">⭐ Top Pick</span><% } %>
+                </div>
+                <div class="card__body">
+                  <h3 class="card__title"><%= home.houseName %></h3>
+                  <p class="card__location">
+                    <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i>
+                    <%= home.location %>
+                  </p>
+                  <div class="card__meta">
+                    <div class="card__price">Rs <%= home.price %> <span>/ night</span></div>
+                    <div class="card__rating">
+                      <span class="star">★</span> <%= home.rating %>
+                    </div>
+                  </div>
+                  <div class="card__actions">
+                    <a href="/homes/<%= home._id %>" class="btn btn-blue btn-full">
+                      <i class="fa-solid fa-eye"></i> View Details
+                    </a>
+                    <%- include('../partials/favorite', {home: home}) %>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+    </main>
+
+    <footer class="footer">
+      © <%= new Date().getFullYear() %> <a href="/">Airbab</a>. Built with ❤️ as a learning project.
+    </footer>
+  </body>
+</html>

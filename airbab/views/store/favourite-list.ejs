@@ -1,0 +1,60 @@
+<%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <main class="page-wrapper">
+      <div class="page-header anim-fadeUp">
+        <p class="page-header__eyebrow"><i class="fa-regular fa-heart"></i> Saved</p>
+        <h1 class="page-header__title">Your Favourites</h1>
+        <p class="page-header__subtitle">Homes you've saved for your next adventure.</p>
+      </div>
+
+      <% if (favouriteHomes.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-state__icon">💔</div>
+          <h3 class="empty-state__title">No favourites yet</h3>
+          <p class="empty-state__subtitle">Start exploring and save the homes you love.</p>
+          <a href="/homes" class="btn btn-primary">Explore Homes</a>
+        </div>
+      <% } else { %>
+        <div class="homes-grid">
+          <% favouriteHomes.forEach((home, i) => { %>
+            <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
+              <div class="card__image-wrap">
+                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                <span class="card__badge card__badge--booked">❤️ Saved</span>
+              </div>
+              <div class="card__body">
+                <h3 class="card__title"><%= home.houseName %></h3>
+                <p class="card__location">
+                  <i class="fa-solid fa-location-dot" style="color:var(--brand);"></i>
+                  <%= home.location %>
+                </p>
+                <div class="card__meta">
+                  <div class="card__price">Rs <%= home.price %> <span>/ night</span></div>
+                  <div class="card__rating"><span class="star">★</span> <%= home.rating %></div>
+                </div>
+                <div class="card__actions">
+                  <form action="/bookings/add" method="POST" class="flex-1" onsubmit="return confirm('Confirm booking for <%= home.houseName %>?')">
+                    <input type="hidden" name="id" value="<%= home._id %>" />
+                    <button type="submit" class="btn btn-primary btn-full">
+                      <i class="fa-regular fa-calendar-check"></i> Book Now
+                    </button>
+                  </form>
+                  <form action="/favourites/remove" method="POST">
+                    <input type="hidden" name="id" value="<%= home._id %>" />
+                    <button type="submit" class="btn btn-danger" title="Remove from favourites">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </main>
+
+    <footer class="footer">© <%= new Date().getFullYear() %> <a href="/">Airbab</a></footer>
+  </body>
+</html>

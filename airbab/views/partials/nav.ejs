@@ -1,0 +1,56 @@
+<header class="navbar">
+  <nav class="navbar__inner">
+
+    <!-- Logo -->
+    <a href="/" class="navbar__logo">
+      <div class="navbar__logo-icon">
+        <i class="fa-solid fa-house-chimney"></i>
+      </div>
+      airbab
+    </a>
+
+    <!-- Center Links -->
+    <ul class="navbar__links">
+      <% if(isLoggedIn) { %>
+        <li>
+          <a href="/homes" class="navbar__link <%= currentPage === 'Home' ? 'active' : '' %>">
+            <i class="fa-solid fa-magnifying-glass"></i> Explore
+          </a>
+        </li>
+        <li>
+          <a href="/favourites" class="navbar__link <%= currentPage === 'favourites' ? 'active' : '' %>">
+            <i class="fa-regular fa-heart"></i> Favourites
+          </a>
+        </li>
+        <li>
+          <a href="/bookings" class="navbar__link <%= currentPage === 'bookings' ? 'active' : '' %>">
+            <i class="fa-regular fa-calendar-check"></i> Bookings
+          </a>
+        </li>
+        <li>
+          <a href="/host/host-home-list" class="navbar__link <%= currentPage === 'host-homes' ? 'active' : '' %>">
+            <i class="fa-solid fa-building"></i> My Listings
+          </a>
+        </li>
+        <li>
+          <a href="/host/add-home" class="navbar__link <%= currentPage === 'addHome' ? 'active' : '' %>">
+            <i class="fa-solid fa-plus"></i> Add Home
+          </a>
+        </li>
+      <% } %>
+    </ul>
+
+    <!-- Right Actions -->
+    <div class="navbar__actions">
+      <% if(!isLoggedIn) { %>
+        <a href="/signup" class="btn btn-ghost">Sign Up</a>
+        <a href="/Login" class="btn btn-primary">Login <i class="fa-solid fa-arrow-right"></i></a>
+      <% } else { %>
+        <a href="/logout" class="btn btn-danger">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      <% } %>
+    </div>
+
+  </nav>
+</header>
