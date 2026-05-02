@@ -12,7 +12,6 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postSignup = [
-  // First Name validation
   check("firstName")
     .notEmpty()
     .withMessage("First name is required")
@@ -22,7 +21,6 @@ exports.postSignup = [
     .matches(/^[a-zA-Z\s]+$/)
     .withMessage("First name can only contain letters"),
 
-  // Last Name validation
   check("lastName")
     .notEmpty()
     .withMessage("Last name is required")
@@ -32,13 +30,11 @@ exports.postSignup = [
     .matches(/^[a-zA-Z\s]+$/)
     .withMessage("Last name can only contain letters"),
 
-  // Email validation
   check("email")
     .isEmail()
     .withMessage("Please enter a valid email")
     .normalizeEmail(),
 
-  // Password validation
   check("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long")
@@ -46,11 +42,10 @@ exports.postSignup = [
     .withMessage("Password must contain at least one lowercase letter")
     .matches(/[A-Z]/)
     .withMessage("Password must contain at least one uppercase letter")
-    .matches(/[!@#$%^&*(),.":{}<>]/)
+    .matches(/[!@#$%^&*(),.":{}|<>]/)
     .withMessage("Password must contain at least one special character")
     .trim(),
 
-  // Confirm Password validation
   check("confirmPassword")
     .trim()
     .custom((value, { req }) => {
@@ -60,14 +55,12 @@ exports.postSignup = [
       return true;
     }),
 
-  // User Type validation
   check("userType")
     .notEmpty()
     .withMessage("User type is required")
     .isIn(["guest", "host"])
     .withMessage("Invalid user type"),
 
-  // Terms Accepted validation
   check("terms")
     .notEmpty()
     .withMessage("You must accept the terms and conditions")
@@ -78,7 +71,6 @@ exports.postSignup = [
       return true;
     }),
 
-  // Handler
   (req, res, next) => {
     const { firstName, lastName, email, password, userType } = req.body;
     const errors = validationResult(req);
@@ -128,11 +120,8 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const { username, password } = req.body;
 
-  // Step 1: Find user by email
   User.findOne({ email: username })
     .then((user) => {
-
-      // Step 2: If user not found, re-render login with error
       if (!user) {
         return res.status(422).render("auth/Login", {
           pageTitle: "Login to Airbnb",
@@ -142,7 +131,6 @@ exports.postLogin = (req, res, next) => {
         });
       }
 
-      // Step 3: Compare password with bcrypt
       bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch) {
           return res.status(422).render("auth/Login", {
@@ -153,7 +141,6 @@ exports.postLogin = (req, res, next) => {
           });
         }
 
-        // Password matches — create session and redirect home
         req.session.isLoggedIn = true;
         res.redirect("/");
       });

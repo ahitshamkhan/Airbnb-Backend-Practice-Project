@@ -83,7 +83,7 @@ exports.postAddHome = (req, res, next) => {
     .save()
     .then(() => {
       console.log("Home Saved Successfully");
-      res.redirect("/host/host-home-list"); // ← redirect after save
+      res.redirect("/host/host-home-list");
     })
     .catch((error) => {
       console.log("Error adding home:", error);
