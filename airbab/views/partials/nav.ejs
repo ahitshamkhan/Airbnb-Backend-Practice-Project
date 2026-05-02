@@ -1,7 +1,6 @@
 <header class="navbar">
   <nav class="navbar__inner">
 
-    <!-- Logo -->
     <a href="/" class="navbar__logo">
       <div class="navbar__logo-icon">
         <i class="fa-solid fa-house-chimney"></i>
@@ -9,9 +8,8 @@
       airbab
     </a>
 
-    <!-- Center Links -->
     <ul class="navbar__links">
-      <% if(isLoggedIn) { %>
+      <% if (isLoggedIn && userType === 'guest') { %>
         <li>
           <a href="/homes" class="navbar__link <%= currentPage === 'Home' ? 'active' : '' %>">
             <i class="fa-solid fa-magnifying-glass"></i> Explore
@@ -27,6 +25,14 @@
             <i class="fa-regular fa-calendar-check"></i> Bookings
           </a>
         </li>
+      <% } %>
+
+      <% if (isLoggedIn && userType === 'host') { %>
+        <li>
+          <a href="/homes" class="navbar__link <%= currentPage === 'Home' ? 'active' : '' %>">
+            <i class="fa-solid fa-magnifying-glass"></i> Explore
+          </a>
+        </li>
         <li>
           <a href="/host/host-home-list" class="navbar__link <%= currentPage === 'host-homes' ? 'active' : '' %>">
             <i class="fa-solid fa-building"></i> My Listings
@@ -40,9 +46,8 @@
       <% } %>
     </ul>
 
-    <!-- Right Actions -->
     <div class="navbar__actions">
-      <% if(!isLoggedIn) { %>
+      <% if (!isLoggedIn) { %>
         <a href="/signup" class="btn btn-ghost">Sign Up</a>
         <a href="/Login" class="btn btn-primary">Login <i class="fa-solid fa-arrow-right"></i></a>
       <% } else { %>

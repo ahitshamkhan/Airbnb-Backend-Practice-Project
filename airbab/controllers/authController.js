@@ -90,7 +90,7 @@ exports.postSignup = [
     }
 
     bcrypt.hash(password, 12).then((hashedPassword) => {
-      const user = new User({ firstName, lastName, email, password, userType });
+      const user = new User({ firstName, lastName, email, password: hashedPassword, userType });
       user
         .save()
         .then(() => {
@@ -142,7 +142,11 @@ exports.postLogin = (req, res, next) => {
         }
 
         req.session.isLoggedIn = true;
-        res.redirect("/");
+        req.session.userId     = user._id.toString();
+        req.session.userType   = user.userType;
+        req.session.save(() => {
+          res.redirect("/");
+        });
       });
     })
     .catch((err) => {
