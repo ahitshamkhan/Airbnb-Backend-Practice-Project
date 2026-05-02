@@ -30,12 +30,12 @@ exports.getEditHome = (req, res, next) => {
 };
 
 exports.postEditHome = (req, res, next) => {
-  const { id, houseName, price, location, rating, photoUrl, description } =
+  const { id, houseName, price, location, rating, photo, description } =
     req.body;
   Home.findByIdAndUpdate(
     id,
-    { houseName, price, location, rating, photoUrl, description },
-    { new: true }
+    { houseName, price, location, rating, photo, description },
+    { new: true },
   )
     .then(() => {
       res.redirect("/host/host-home-list");
@@ -69,16 +69,15 @@ exports.getHostHomes = (req, res, next) => {
 };
 
 exports.postAddHome = (req, res, next) => {
-  const { houseName, price, location, rating, photoUrl, description } =
-    req.body;
-  const home = new Home(
-    {houseName,
+  const { houseName, price, location, rating, photo, description } = req.body;
+  const home = new Home({
+    houseName,
     price,
     location,
     rating,
-    photoUrl,
-    description}
-  );
+    photo,
+    description,
+  });
   home
     .save()
     .then(() => {

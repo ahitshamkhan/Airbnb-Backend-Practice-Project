@@ -14,14 +14,16 @@
           <div class="empty-state__icon">🏘️</div>
           <h3 class="empty-state__title">No homes listed yet</h3>
           <p class="empty-state__subtitle">Check back soon or list your own property.</p>
+          <% if (isLoggedIn && userType === 'host') { %>
           <a href="/host/add-home" class="btn btn-primary">List a Home</a>
+          <% } %>
         </div>
       <% } else { %>
         <div class="homes-grid">
           <% registeredHomes.forEach((home, i) => { %>
             <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
               <div class="card__image-wrap">
-                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="card__image" />
               </div>
               <div class="card__body">
                 <h3 class="card__title"><%= home.houseName %></h3>

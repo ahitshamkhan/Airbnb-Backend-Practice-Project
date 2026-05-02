@@ -11,7 +11,7 @@
 
       <!-- Hero Image -->
       <div class="detail-hero anim-fadeUp">
-        <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" />
+        <img src="<%= home.photo %>" alt="<%= home.houseName %>" />
       </div>
 
       <!-- Detail Grid -->
@@ -72,12 +72,22 @@
             </ul>
           </div>
 
+          <% if (isLoggedIn && userType === 'guest') { %>
           <form action="/favourites" method="POST" style="margin-bottom: 10px;">
             <input type="hidden" name="id" value="<%= home._id %>" />
             <button type="submit" class="btn btn-success btn-full">
               <i class="fa-regular fa-heart"></i> Save to Favourites
             </button>
           </form>
+          <% } else if (isLoggedIn && userType === 'host') { %>
+          <div style="background: rgba(255,200,0,0.08); border: 1px solid rgba(255,200,0,0.2); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; font-size: 0.85rem; color: var(--text-secondary); text-align:center;">
+            <i class="fa-solid fa-info-circle"></i> Hosts cannot book or save listings.
+          </div>
+          <% } else { %>
+          <a href="/Login" class="btn btn-success btn-full" style="margin-bottom:10px; justify-content:center;">
+            <i class="fa-solid fa-right-to-bracket"></i> Login to Save
+          </a>
+          <% } %>
 
           <a href="/homes" class="btn btn-ghost btn-full" style="justify-content:center;">
             <i class="fa-solid fa-arrow-left"></i> Back to listings

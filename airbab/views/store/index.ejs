@@ -17,12 +17,19 @@
           Discover handpicked properties in stunning locations. From cozy city apartments to breathtaking mountain retreats.
         </p>
         <div class="hero__cta">
-          <% if(isLoggedIn) { %>
+          <% if (isLoggedIn && userType === 'guest') { %>
             <a href="/homes" class="btn btn-primary btn-lg">
               <i class="fa-solid fa-magnifying-glass"></i> Explore Homes
             </a>
+            <a href="/favourites" class="btn btn-ghost btn-lg">
+              <i class="fa-regular fa-heart"></i> My Favourites
+            </a>
+          <% } else if (isLoggedIn && userType === 'host') { %>
+            <a href="/host/host-home-list" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-building"></i> Manage Listings
+            </a>
             <a href="/host/add-home" class="btn btn-ghost btn-lg">
-              Become a Host <i class="fa-solid fa-arrow-right"></i>
+              <i class="fa-solid fa-plus"></i> Add New Home
             </a>
           <% } else { %>
             <a href="/signup" class="btn btn-primary btn-lg">
@@ -70,7 +77,7 @@
             <% registeredHomes.forEach((home, i) => { %>
               <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
                 <div class="card__image-wrap">
-                  <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                  <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="card__image" />
                   <% if(i === 0) { %><span class="card__badge card__badge--featured">⭐ Top Pick</span><% } %>
                 </div>
                 <div class="card__body">

@@ -27,7 +27,7 @@
           <% registeredHomes.forEach((home, i) => { %>
             <div class="card anim-fadeUp anim-fadeUp--d<%= Math.min(i+1, 4) %>">
               <div class="card__image-wrap">
-                <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="card__image" />
+                <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="card__image" />
               </div>
               <div class="card__body">
                 <h3 class="card__title"><%= home.houseName %></h3>
